@@ -3,13 +3,20 @@ package Steps;
 import Elements.Task;
 import com.codeborne.selenide.Selenide;
 import io.cucumber.java.ru.И;
+import io.cucumber.java.ru.Когда;
+import io.cucumber.java.ru.Тогда;
 import org.junit.jupiter.api.Assertions;
 import java.time.Duration;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.switchTo;
 
 public class TaskSteps extends Task {
-    @И("^Заводим новый баг с описанием")
+    @Когда( "Нажимаем кнопку \"Создать\"")
+    public static void CreatTask() {
+        create.click();
+        createTask.shouldBe(visible, Duration.ofSeconds(60));
+    }
+    @Тогда("^В открывшемся окне: \"Создать задачу\", описываем новую задачу и создаем её")
     public static void TaskMethod() {
         Type.shouldBe(visible, Duration.ofSeconds(60)).click();
         Type.sendKeys("Ошибка");
@@ -28,8 +35,8 @@ public class TaskSteps extends Task {
         assign.click();
         btnCreate.click();
     }
-    @И("^Проводим статус задачи до закрытого")
-        public static void StatusTask(){
+    @И("^Проводим задачу по статусам до \"([^\"]*)\"$")
+        public static void StatusTask(String StatusTask){
         allTask.click();
         myTask.shouldBe(visible, Duration.ofSeconds(60)).click();
         error.shouldBe(visible, Duration.ofSeconds(60)).click();
@@ -45,6 +52,6 @@ public class TaskSteps extends Task {
         Selenide.sleep(1000);
 
         String statusZad1=statusVal.getText();
-        Assertions.assertEquals(statusZad1, "ГОТОВО", "ошибка");
+        Assertions.assertEquals(statusZad1, StatusTask, "ошибка");
     }
 }

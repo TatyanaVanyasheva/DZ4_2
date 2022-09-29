@@ -20,4 +20,6 @@ public class Task {
     public static SelenideElement myTask=$x("//a[contains(text(),'Мои открытые задачи')]");
     public static SelenideElement error=$x("//li[@title='Название ошибки программы']");
     public static SelenideElement statusVal=$x("//span[contains(@class, 'jira-issue-status-lozenge')]");
+    public static SelenideElement create=$x("//a[contains(text(),'Создать')]");
+    public static SelenideElement createTask=$x("//h2[text()='Создание задачи']");
 }

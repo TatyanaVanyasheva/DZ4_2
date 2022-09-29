@@ -2,24 +2,28 @@ package Steps;
 
 import Elements.Proj;
 import io.cucumber.java.ru.И;
+import io.cucumber.java.ru.Когда;
+import io.cucumber.java.ru.Тогда;
 import org.junit.jupiter.api.Assertions;
 import java.time.Duration;
 import static com.codeborne.selenide.Condition.visible;
 
 public class ProjSteps extends Proj {
-    @И("Переходим в задачу TestSelenium и проверяем статус и привязку к версии")
-    public static void ProjMethod() {
+    @Когда ("В поиске ищем задачу \"([^\"]*)\" и переходим в неё$")
+    public static void ProjMethod(String TaskName) {
         search.shouldBe(visible, Duration.ofSeconds(60));
-        search.setValue("TestSelenium_bug").pressEnter();
+        search.setValue(TaskName).pressEnter();
+    }
+    @Тогда ("Проверяем статус: \"([^\"]*)\"$")
+        public static void StatusTask(String stat) {
         String statZ = status.getText();
         System.out.println("Статус задачи:" + statZ);
+        Assertions.assertEquals(statZ, stat, "ошибка");
+    }
+    @И ("Привязку к версии: \"([^\"]*)\"$")
+        public static void VersionTask(String vers) {
         String versZ = version.getText();
         System.out.println("Версия:" + versZ);
-
-        Assertions.assertEquals(statZ, "СДЕЛАТЬ", "ошибка");
-        Assertions.assertEquals(versZ, "Version 2.0", "ошибка");
-
-        create.click();
-        createTask.shouldBe(visible, Duration.ofSeconds(60));
+        Assertions.assertEquals(versZ, vers, "ошибка");
+        }
     }
-}
